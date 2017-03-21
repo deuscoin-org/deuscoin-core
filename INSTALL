@@ -1,0 +1,5 @@
+Building Deuscoin
+
+See doc/build-*.md for instructions on building deuscoind,
+the intended-for-services, no-graphical-interface, reference
+implementation of Deuscoin.

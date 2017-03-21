@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Deuscoin
+Comment=Deuscoin P2P Cryptocurrency
+Comment[fr]=Deuscoin, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Deuscoin, eşten eşe kriptografik sanal para birimi
+Exec=deuscoin-qt %u
+Terminal=false
+Type=Application
+Icon=deuscoin128
+MimeType=x-scheme-handler/deuscoin;
+Categories=Office;Finance;

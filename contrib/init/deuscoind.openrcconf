@@ -1,0 +1,33 @@
+# /etc/conf.d/deuscoind: config file for /etc/init.d/deuscoind
+
+# Config file location
+#DEUSCOIND_CONFIGFILE="/etc/deuscoin/deuscoin.conf"
+
+# What directory to write pidfile to?  (created and owned by $DEUSCOIND_USER)
+#DEUSCOIND_PIDDIR="/var/run/deuscoind"
+
+# What filename to give the pidfile
+#DEUSCOIND_PIDFILE="${DEUSCOIND_PIDDIR}/deuscoind.pid"
+
+# Where to write deuscoind data (be mindful that the blockchain is large)
+#DEUSCOIND_DATADIR="/var/lib/deuscoind"
+
+# User and group to own deuscoind process
+#DEUSCOIND_USER="deuscoin"
+#DEUSCOIND_GROUP="deuscoin"
+
+# Path to deuscoind executable
+#DEUSCOIND_BIN="/usr/bin/deuscoind"
+
+# Nice value to run deuscoind under
+#DEUSCOIND_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+DEUSCOIND_OPTS="-disablewallet"
+
+# The timeout in seconds OpenRC will wait for deuscoind to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+DEUSCOIND_SIGTERM_TIMEOUT=60

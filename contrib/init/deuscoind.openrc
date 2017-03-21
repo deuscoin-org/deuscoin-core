@@ -1,0 +1,92 @@
+#!/sbin/runscript
+
+# backward compatibility for existing gentoo layout 
+#
+if [ -d "/var/lib/deuscoin/.deuscoin" ]; then
+	DEUSCOIND_DEFAULT_DATADIR="/var/lib/deuscoin/.deuscoin"
+else
+	DEUSCOIND_DEFAULT_DATADIR="/var/lib/deuscoind"
+fi
+
+DEUSCOIND_CONFIGFILE=${DEUSCOIND_CONFIGFILE:-/etc/deuscoin/deuscoin.conf}
+DEUSCOIND_PIDDIR=${DEUSCOIND_PIDDIR:-/var/run/deuscoind}
+DEUSCOIND_PIDFILE=${DEUSCOIND_PIDFILE:-${DEUSCOIND_PIDDIR}/deuscoind.pid}
+DEUSCOIND_DATADIR=${DEUSCOIND_DATADIR:-${DEUSCOIND_DEFAULT_DATADIR}}
+DEUSCOIND_USER=${DEUSCOIND_USER:-${DEUSCOIN_USER:-deuscoin}}
+DEUSCOIND_GROUP=${DEUSCOIND_GROUP:-deuscoin}
+DEUSCOIND_BIN=${DEUSCOIND_BIN:-/usr/bin/deuscoind}
+DEUSCOIND_NICE=${DEUSCOIND_NICE:-${NICELEVEL:-0}}
+DEUSCOIND_OPTS="${DEUSCOIND_OPTS:-${DEUSCOIN_OPTS}}"
+
+name="Deuscoin Core Daemon"
+description="Deuscoin cryptocurrency P2P network daemon"
+
+command="/usr/bin/deuscoind"
+command_args="-pid=\"${DEUSCOIND_PIDFILE}\" \
+		-conf=\"${DEUSCOIND_CONFIGFILE}\" \
+		-datadir=\"${DEUSCOIND_DATADIR}\" \
+		-daemon \
+		${DEUSCOIND_OPTS}"
+
+required_files="${DEUSCOIND_CONFIGFILE}"
+start_stop_daemon_args="-u ${DEUSCOIND_USER} \
+			-N ${DEUSCOIND_NICE} -w 2000"
+pidfile="${DEUSCOIND_PIDFILE}"
+
+# The retry schedule to use when stopping the daemon. Could be either
+# a timeout in seconds or multiple signal/timeout pairs (like
+# "SIGKILL/180 SIGTERM/300")
+retry="${DEUSCOIND_SIGTERM_TIMEOUT}"
+
+depend() {
+	need localmount net
+}
+
+# verify
+# 1) that the datadir exists and is writable (or create it)
+# 2) that a directory for the pid exists and is writable
+# 3) ownership and permissions on the config file
+start_pre() {
+	checkpath \
+	-d \
+	--mode 0750 \
+	--owner "${DEUSCOIND_USER}:${DEUSCOIND_GROUP}" \
+	"${DEUSCOIND_DATADIR}"
+
+	checkpath \
+	-d \
+	--mode 0755 \
+	--owner "${DEUSCOIND_USER}:${DEUSCOIND_GROUP}" \
+	"${DEUSCOIND_PIDDIR}"
+
+	checkpath -f \
+	-o ${DEUSCOIND_USER}:${DEUSCOIND_GROUP} \
+	-m 0660 \
+	${DEUSCOIND_CONFIGFILE}
+
+	checkconfig || return 1
+}
+
+checkconfig()
+{
+	if ! grep -qs '^rpcpassword=' "${DEUSCOIND_CONFIGFILE}" ; then
+		eerror ""
+		eerror "ERROR: You must set a secure rpcpassword to run deuscoind."
+		eerror "The setting must appear in ${DEUSCOIND_CONFIGFILE}"
+		eerror ""
+		eerror "This password is security critical to securing wallets "
+		eerror "and must not be the same as the rpcuser setting."
+		eerror "You can generate a suitable random password using the following"
+		eerror "command from the shell:"
+		eerror ""
+		eerror "bash -c 'tr -dc a-zA-Z0-9 < /dev/urandom | head -c32 && echo'"
+		eerror ""
+		eerror "It is also recommended that you also set alertnotify so you are "
+		eerror "notified of problems:"
+		eerror ""
+		eerror "ie: alertnotify=echo %%s | mail -s \"Deuscoin Alert\"" \
+			"admin@foo.com"
+		eerror ""
+		return 1
+	fi
+}
