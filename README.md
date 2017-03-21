@@ -3,7 +3,7 @@ Deuscoin Core integration/staging tree
 
 [![Build Status](https://travis-ci.org/deuscoin/deuscoin.svg?branch=master)](https://travis-ci.org/deuscoin/deuscoin)
 
-https://deuscoincore.org
+https://deuscoin.org
 
 What is Deuscoin?
 ----------------
