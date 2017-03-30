@@ -19,5 +19,5 @@ depending on the speed of your computer and network connection, the synchronizat
 process can take anywhere from a few hours to a day or more.
 
 See the deuscoin wiki at:
-  https://en.deuscoin.it/wiki/Main_Page
+  https://github.com/deuscoin-org/deuscoin-core/wiki
 for more help and information.
