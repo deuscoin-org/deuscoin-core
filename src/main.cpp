@@ -1682,6 +1682,11 @@ void CheckForkWarningConditions()
             std::string warning = std::string("'Warning: Large-work fork detected, forking after block ") +
                 pindexBestForkBase->phashBlock->ToString() + std::string("'");
             CAlert::Notify(warning, true);
+			LogPrintf("%s: Warning: DEATH Large-work fork detected\n", __func__);
+			while (1)
+			{
+				;;
+			}
         }
         if (pindexBestForkTip && pindexBestForkBase)
         {
@@ -1689,11 +1694,21 @@ void CheckForkWarningConditions()
                    pindexBestForkBase->nHeight, pindexBestForkBase->phashBlock->ToString(),
                    pindexBestForkTip->nHeight, pindexBestForkTip->phashBlock->ToString());
             fLargeWorkForkFound = true;
+			LogPrintf("%s: Warning: DEATH Large valid fork found\n", __func__);
+			while (1)
+			{
+				;;
+			}
         }
         else
         {
             LogPrintf("%s: Warning: Found invalid chain at least ~6 blocks longer than our best chain.\nChain state database corruption likely.\n", __func__);
             fLargeWorkInvalidChainFound = true;
+			LogPrintf("%s: Warning: DEATH Found invalid chain\n", __func__);
+			while (1)
+			{
+				;;
+			}
         }
     }
     else
@@ -1717,6 +1732,11 @@ void CheckForkWarningConditionsOnNewFork(CBlockIndex* pindexNewForkTip)
             break;
         pfork = pfork->pprev;
     }
+    LogPrintf("%s: Warning: DEATH pre-Seven blocks\n", __func__);
+        while (1)
+        {
+            ;;
+        }
 
     // We define a condition where we should warn the user about as a fork of at least 7 blocks
     // with a tip within 72 blocks (+/- 12 hours if no one mines it) of ours
@@ -1731,6 +1751,11 @@ void CheckForkWarningConditionsOnNewFork(CBlockIndex* pindexNewForkTip)
     {
         pindexBestForkTip = pindexNewForkTip;
         pindexBestForkBase = pfork;
+        LogPrintf("%s: Warning: DEATH Seven blocks\n", __func__);
+        while (1)
+        {
+            ;;
+        }
     }
 
     CheckForkWarningConditions();
