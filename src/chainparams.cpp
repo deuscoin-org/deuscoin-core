@@ -148,7 +148,7 @@ if (true && genesis.GetHash() != consensus.hashGenesisBlock)
         vFixedSeeds.clear();
         vSeeds.clear();
 
-//         vSeeds.push_back(CDNSSeedData("explorer.deuscoin.org", "52.221.223.83")); // block explorer
+        vSeeds.push_back(CDNSSeedData("seed.deuscoin.org", "13.228.142.13")); // block explorer
 //         vSeeds.push_back(CDNSSeedData("bluematt.me", "dnsseed.bluematt.me")); // Matt Corallo
 //         vSeeds.push_back(CDNSSeedData("dashjr.org", "dnsseed.deuscoin.dashjr.org")); // Luke Dashjr
 //         vSeeds.push_back(CDNSSeedData("deuscoinstats.com", "seed.deuscoinstats.com")); // Christian Decker
